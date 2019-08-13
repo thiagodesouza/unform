@@ -1,19 +1,26 @@
-export interface Field {
+export interface UnformField {
   name: string;
-  ref?: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
+  ref?:
+    | HTMLInputElement
+    | HTMLTextAreaElement
+    | HTMLSelectElement
+    | HTMLInputElement[]
+    | null[];
   path: string;
   parseValue?: Function;
   clearValue?: Function;
 }
 
-export interface Errors {
+export interface UnformErrors {
   [key: string]: string;
 }
 
-export interface Context {
+export interface UnformContext {
   initialData: object;
-  errors: Errors;
+  errors: UnformErrors;
   scopePath: string;
-  registerField: (field: Field) => void;
+  registerField: (field: UnformField) => void;
   unregisterField: (name: string) => void;
 }
+
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;

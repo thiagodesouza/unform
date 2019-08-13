@@ -1,6 +1,6 @@
 <h1 align="center">
 
-![](assets/logo.png)
+![](assets/unform.png)
 
 </h1>
 
@@ -20,6 +20,34 @@ Create ReactJS uncontrolled form structures with nested fields, validations and 
 
 Unform is a performance focused library that helps you creating beautiful forms in React with the power of uncontrolled components performance and React Hooks.
 
+## Table of contents
+
+- [Key features](#key-features)
+- [Why not Formik, Redux Form or another library?](#why-not-formik-redux-form-or-another-library)
+- [Roadmap](#roadmap)
+- [Installation](#installation)
+- [Guides](#guides)
+  - [Basics](#basics)
+  - [Elements](#elements)
+    - [Input element](#input-element)
+    - [Select element](#select-element)
+    - [File Input element](#file-input-element)
+    - [Choice element](#choice-element)
+    - [Check element](#check-element)
+  - [Reset Form](#reset-form)
+  - [Nested fields](#nested-fields)
+  - [Initial data](#initial-data)
+  - [Validation](#validation)
+  - [Styling](#styling)
+  - [Manipulate data](#manipulate-data)
+- [Custom elements](#custom-elements)
+  - [React select](#react-select)
+  - [React datepicker](#react-datepicker)
+- [Contributing](#contributing)
+  - [Contribution Guidelines](#contribution-guidelines)
+  - [Code of Conduct](#code-of-conduct)
+- [License](#license)
+
 ## Key features
 
 - Beautiful syntax;
@@ -37,7 +65,6 @@ Formik/Redux Form has a really great syntax while it has a really poor support t
 ## Roadmap
 
 - Native checkbox/radio support;
-- Styled components support;
 - React Native support (should we?);
 - Better docs;
 
@@ -49,26 +76,6 @@ Just add unform to your project:
 yarn add @rocketseat/unform
 ```
 
-## Table of contents
-
-- [Guides](#guides)
-  - [Basics](#basics)
-  - [Elements](#elements)
-    - [Input element](#input-element)
-    - [Select element](#select-element)
-  - [Reset Form](#reset-form)
-  - [Nested fields](#nested-fields)
-  - [Initial data](#initial-data)
-  - [Validation](#validation)
-  - [Manipulate data](#manipulate-data)
-  - [Custom Elements](#custom-elements)
-    - [React Select](#react-select)
-    - [React Datepicker](#react-datepicker)
-- [Contributing](#contributing)
-  - [Contribution Guidelines](#contributing-guide)
-  - [Code of Conduct](#code-of-conduct)
-- [License](#license)
-
 ## Guides
 
 ### Basics
@@ -76,8 +83,8 @@ yarn add @rocketseat/unform
 Unform exposes two default form elements: `<Input />` and `<Select />`. Currently, `<Select />` element does not support multiple values, you can use [React Select](#react-select) example to achieve that.
 
 ```js
-import React from "react";
-import { Form, Input } from "@rocketseat/unform";
+import React from 'react';
+import { Form, Input } from '@rocketseat/unform';
 
 function App() {
   function handleSubmit(data) {
@@ -86,10 +93,10 @@ function App() {
     /**
      * {
      *   email: 'email@example.com',
-     *   password: "123456"
+     *   password: '123456'
      * }
      */
-  };
+  }
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -102,6 +109,10 @@ function App() {
 }
 ```
 
+**↑ back to:** [Table of contents](#table-of-contents) · [Guides](#guides)
+
+<hr>
+
 ### Elements
 
 Unform exposes two elements by default, Input and Select.
@@ -111,11 +122,11 @@ Unform exposes two elements by default, Input and Select.
 Input elements can receive a `multiline` prop that will render a textarea instead.
 
 ```js
-import React from "react";
-import { Form, Input } from "@rocketseat/unform";
+import React from 'react';
+import { Form, Input } from '@rocketseat/unform';
 
 function App() {
-  function handleSubmit(data) {};
+  function handleSubmit(data) {}
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -128,20 +139,26 @@ function App() {
 }
 ```
 
+**↑ back to:** [Table of contents](#table-of-contents) · [Guides](#guides)
+
+<hr>
+
 #### Select element
 
+Every `<Select />` element must receive an property with an array of options. Every option inside this array must be an object with `id` and `title` as shown in the example below.
+
 ```js
-import React from "react";
-import { Form, Select } from "@rocketseat/unform";
+import React from 'react';
+import { Form, Select } from '@rocketseat/unform';
 
 const options = [
-  { id: "react", title: "ReactJS" },
-  { id: "node", title: "NodeJS" },
-  { id: "rn", title: "React Native" }
+  { id: 'react', title: 'ReactJS' },
+  { id: 'node', title: 'NodeJS' },
+  { id: 'rn', title: 'React Native' },
 ];
 
 function App() {
-  function handleSubmit(data) {};
+  function handleSubmit(data) {}
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -153,16 +170,132 @@ function App() {
 }
 ```
 
+**↑ back to:** [Table of contents](#table-of-contents) · [Guides](#guides)
+
+<hr>
+
+#### File Input element
+
+FileInput components may receive an `onStartProgress` property that will be called when file loading starts.
+
+```js
+import React from 'react';
+import { Form, FileInput } from '@rocketseat/unform';
+
+function App() {
+  function handleSubmit(data) {}
+
+  function handleProgress(progress, event) {}
+
+  return (
+    <Form onSubmit={handleSubmit}>
+      <FileInput name="attach" onStartProgress={handleProgress} />
+
+      <button type="submit">Send</button>
+    </Form>
+  );
+}
+```
+
+**↑ back to:** [Table of contents](#table-of-contents) · [Guides](#guides)
+
+<hr>
+
+#### Choice element
+
+Choice element represents multiple options elements.
+The `options` property is the options list, and is necessary.
+
+It will display checkboxes or radio buttons based on `multiple` property.
+
+To display multiple checkboxes:
+```js
+import React from 'react';
+import { Form, FileInput } from '@rocketseat/unform';
+
+function App() {
+  function handleSubmit(data) {}
+
+  function handleProgress(progress, event) {}
+
+  return (
+    <Form onSubmit={handleSubmit}>
+      <Choice name="fieldName" options={[
+        { value: '1', label: 'One' },
+        { value: '2', label: 'Two' }
+      ]} multiple />
+
+      <button type="submit">Send</button>
+    </Form>
+  );
+}
+```
+When the value is returned, the format is an array of selected values (*..., fieldName: ['1', '2', ...], ...*).
+
+
+To display multiple radio buttons:
+```js
+import React from 'react';
+import { Form, Choice } from '@rocketseat/unform';
+
+function App() {
+  function handleSubmit(data) {}
+
+  return (
+    <Form onSubmit={handleSubmit}>
+      <Choice name="fieldName" options={[
+        { value: '1', label: 'One' },
+        { value: '2', label: 'Two' }
+      ]} />
+
+      <button type="submit">Send</button>
+    </Form>
+  );
+}
+```
+When the value is returned in this case, the format will be the value selected (*..., fieldName: '1', ...*).
+
+
+**↑ back to:** [Table of contents](#table-of-contents) · [Guides](#guides)
+
+<hr>
+
+#### Check element
+
+This component display only one option in form of a single checkbox.
+
+```js
+import React from 'react';
+import { Form, Check } from '@rocketseat/unform';
+
+function App() {
+  function handleSubmit(data) {}
+
+  return (
+    <Form onSubmit={handleSubmit}>
+      <Check name="fieldName" label="Test Field" />
+
+      <button type="submit">Send</button>
+    </Form>
+  );
+}
+```
+The value of this element will be true if checked or false otherwise (*..., fieldName: true, ...*).
+
+**↑ back to:** [Table of contents](#table-of-contents) · [Guides](#guides)
+
+<hr>
+
 ### Reset form
 
 ```js
-import React from "react";
-import { Form, Input } from "@rocketseat/unform";
+import React from 'react';
+import { Form, Input } from '@rocketseat/unform';
 
 function App() {
   function handleSubmit(data, { resetForm }) {
     resetForm();
-  };
+  }
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -175,11 +308,42 @@ function App() {
 }
 ```
 
+_Optional:_ `resetForm` may receive an object that will be applied when the form is reset.
+
+```js
+import React from 'react';
+import { Form, Input } from '@rocketseat/unform';
+
+const options = [
+  { id: 'react', title: 'ReactJS' },
+  { id: 'node', title: 'NodeJS' },
+  { id: 'rn', title: 'React Native' },
+];
+
+function App() {
+  function handleSubmit(data, { resetForm }) {
+    resetForm({ tech: 'react' });
+  }
+
+  return (
+    <Form onSubmit={handleSubmit}>
+      <Select name="tech" options={options} />
+
+      <button type="submit">Send</button>
+    </Form>
+  );
+}
+```
+
+**↑ back to:** [Table of contents](#table-of-contents) · [Guides](#guides)
+
+<hr>
+
 ### Nested fields
 
 ```js
-import React from "react";
-import { Form, Input, Scope } from "@rocketseat/unform";
+import React from 'react';
+import { Form, Input, Scope } from '@rocketseat/unform';
 
 function App() {
   function handleSubmit(data) {
@@ -191,7 +355,7 @@ function App() {
      *   address: { street: "Name of street", number: 123 }
      * }
      */
-  };
+  }
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -208,13 +372,17 @@ function App() {
 }
 ```
 
+**↑ back to:** [Table of contents](#table-of-contents) · [Guides](#guides)
+
+<hr>
+
 ### Initial data
 
 _Optional_: Here you can set what the initial data for each field will be, you store the initial field values into a variable and load it in the `Form` using the prop `initialData`.
 
 ```js
-import React from "react";
-import { Form, Input, Scope } from "@rocketseat/unform";
+import React from 'react';
+import { Form, Input, Scope } from '@rocketseat/unform';
 
 function App() {
   const initialData = {
@@ -222,9 +390,9 @@ function App() {
     address: {
       street: 'Sample Avenue',
     },
-  }
+  };
 
-  function handleSubmit(data) {};
+  function handleSubmit(data) {}
 
   return (
     <Form onSubmit={handleSubmit} initialData={initialData}>
@@ -241,22 +409,30 @@ function App() {
 }
 ```
 
+**↑ back to:** [Table of contents](#table-of-contents) · [Guides](#guides)
+
+<hr>
+
 ### Validation
 
+> When you define your schema to validation, only data defined in it will be sent to `data` in `onSubmit` event even though there are other fields.
+
 ```js
-import React from "react";
-import { Form, Input } from "@rocketseat/unform";
+import React from 'react';
+import { Form, Input } from '@rocketseat/unform';
 import * as Yup from 'yup';
 
 const schema = Yup.object().shape({
   email: Yup.string()
     .email('Custom invalid email message')
     .required('Custom required message'),
-  password: Yup.string().min(4).required(),
-})
+  password: Yup.string()
+    .min(4)
+    .required(),
+});
 
 function App() {
-  function handleSubmit(data) {};
+  function handleSubmit(data) {}
 
   return (
     <Form schema={schema} onSubmit={handleSubmit}>
@@ -269,22 +445,47 @@ function App() {
 }
 ```
 
+**↑ back to:** [Table of contents](#table-of-contents) · [Guides](#guides)
+
+<hr>
+
+### Styling
+
+The `Form` component exposes two props for that: `style` and `className`. You can use any `CSS-in-JS` library to style your form or just pass the class name string, or even the `style` object directly! For example:
+
+```js
+import styled from 'styled-components'; // or emotion, for example
+
+// weird choice for a background color, huh?
+export default styled(MyForm)`
+  background: red;
+`;
+```
+
+**↑ back to:** [Table of contents](#table-of-contents) · [Guides](#guides)
+
+<hr>
+
 ### Manipulate data
 
 ```js
-import React, { useState } from "react";
-import { Form, Input } from "@rocketseat/unform";
+import React, { useState } from 'react';
+import { Form, Input } from '@rocketseat/unform';
 import * as Yup from 'yup';
 
 const schema = Yup.object().shape({
   name: Yup.string().required(),
-  email: Yup.string().email().required(),
+  email: Yup.string()
+    .email()
+    .required(),
   password: Yup.string().when('$updatePassword', {
     is: true,
-    then: Yup.string().min(4).required(),
-    otherwise: Yup.string().strip(true)
+    then: Yup.string()
+      .min(4)
+      .required(),
+    otherwise: Yup.string().strip(true),
   }),
-})
+});
 
 function App() {
   const [updatePassword, setUpdatePassword] = useState(false);
@@ -292,9 +493,9 @@ function App() {
   const initialData = {
     name: 'John Doe',
     email: 'johndoe@example.com',
-  }
+  };
 
-  function handleSubmit(data) {};
+  function handleSubmit(data) {}
 
   return (
     <Form
@@ -321,6 +522,10 @@ function App() {
 }
 ```
 
+**↑ back to:** [Table of contents](#table-of-contents) · [Guides](#guides)
+
+<hr>
+
 ## Custom elements
 
 Sometimes we need to use third-party component in our forms. But don't you worry, Unform has your back! You can do that via `useField` which provides all the resources you need to use your component with Unform.
@@ -330,10 +535,10 @@ Below are some examples with [react-select](https://github.com/JedWatson/react-s
 ### React select
 
 ```js
-import React, { useRef, useEffect } from "react";
-import Select from "react-select";
+import React, { useRef, useEffect } from 'react';
+import Select from 'react-select';
 
-import { useField } from "@rocketseat/unform";
+import { useField } from '@rocketseat/unform';
 
 export default function ReactSelect({
   name,
@@ -347,7 +552,7 @@ export default function ReactSelect({
 
   function parseSelectValue(selectValue) {
     if (!multiple) {
-      return selectValue ? selectValue.id : "";
+      return selectValue ? selectValue.id : '';
     }
 
     return selectValue ? selectValue.map(option => option.id) : [];
@@ -357,11 +562,11 @@ export default function ReactSelect({
     registerField({
       name: fieldName,
       ref: ref.current,
-      path: "state.value",
+      path: 'state.value',
       parseValue: parseSelectValue,
       clearValue: selectRef => {
         selectRef.select.clearValue();
-      }
+      },
     });
   }, [ref.current, fieldName]);
 
@@ -397,15 +602,19 @@ export default function ReactSelect({
 }
 ```
 
+**↑ back to:** [Table of contents](#table-of-contents) · [Guides](#guides)
+
+<hr>
+
 ### React datepicker
 
 ```js
-import React, { useRef, useEffect, useState } from "react";
-import ReactDatePicker from "react-datepicker";
+import React, { useRef, useEffect, useState } from 'react';
+import ReactDatePicker from 'react-datepicker';
 
-import { useField } from "@rocketseat/unform";
+import { useField } from '@rocketseat/unform';
 
-import "react-datepicker/dist/react-datepicker.css";
+import 'react-datepicker/dist/react-datepicker.css';
 
 export default function DatePicker({ name }) {
   const ref = useRef(null);
@@ -416,10 +625,10 @@ export default function DatePicker({ name }) {
     registerField({
       name: fieldName,
       ref: ref.current,
-      path: "props.selected",
+      path: 'props.selected',
       clearValue: pickerRef => {
         pickerRef.clear();
-      }
+      },
     });
   }, [ref.current, fieldName]);
 
@@ -435,8 +644,11 @@ export default function DatePicker({ name }) {
     </>
   );
 }
-
 ```
+
+**↑ back to:** [Table of contents](#table-of-contents) · [Guides](#guides)
+
+<hr>
 
 ## Contributing
 
